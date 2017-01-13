@@ -9,7 +9,17 @@ var $ = (function(){
   //headers (object)
   //url (string)
   //async (boolean)
-  var ajax = function(options) {
+  var get = function get(options) {
+    options.method = "GET";
+    ajax(options);
+  };
+
+  var post = function post(options) {
+    options.method = "POST";
+    ajax(options);
+  };
+
+  var ajax = function ajax(options) {
 
     var xhr = new XMLHttpRequest();
 
@@ -31,7 +41,9 @@ var $ = (function(){
   };
 
   return {
-    ajax: ajax
+    ajax: ajax,
+    get: get,
+    post: post
   };
 
 }());
@@ -65,3 +77,30 @@ function ajaxPostTest() {
     data: "title=Foo&body=Bar&userId=1"
   });
 }
+
+function getTest() {
+
+  var success = function() {
+    console.log("get", this.responseText);
+  };
+
+  $.get({ url: "https://reqres.in/api/products/3",
+    success: success,
+    async: true,
+  });
+}
+
+function postTest() {
+
+  var success = function() {
+    console.log("post", this.responseText);
+  };
+
+  $.post({ url: "https://reqres.in/api/posts",
+    success: success,
+    async: true,
+    data: "title=Foo&body=Bar&userId=1"
+  });
+}
+
+// OPTIONAL if done w/ puppies

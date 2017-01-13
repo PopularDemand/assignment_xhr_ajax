@@ -16,14 +16,18 @@ var $ = (function(){
     xhr.addEventListener("load", options.success);
     xhr.addEventListener("error", options.error);
     xhr.onreadystatechange = function(event) {
-      if (xhr.readyState === 4) {
+      if (xhr.readyState === 4 && options.complete) {
         options.complete(event);
       }
     };
-    
-    xhr.setRequestHeader(options.headers[0], options.headers[1]);
+
+    if (options.headers) {
+      xhr.setRequestHeader(options.headers[0], options.headers[1]);
+    }
+
     xhr.open(options.method, options.url, options.async);
-    xhr.send(data);
+
+    xhr.send(options.data);
   };
 
   return {
@@ -31,3 +35,33 @@ var $ = (function(){
   };
 
 }());
+
+/*
+ * TESTS
+*/
+function ajaxGetTest() {
+
+  var success = function() {
+    console.log("GET", this.responseText);
+  };
+
+  $.ajax({ url: "https://reqres.in/api/products/3",
+    method: "GET",
+    success: success,
+    async: true
+  });
+}
+
+function ajaxPostTest() {
+
+  var success = function() {
+    console.log("POST", this.responseText);
+  };
+
+  $.ajax({ url: "https://reqres.in/api/posts",
+    method: "POST",
+    success: success,
+    async: true,
+    data: "title=Foo&body=Bar&userId=1"
+  });
+}

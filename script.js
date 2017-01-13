@@ -5,10 +5,10 @@ function reqresGetTest() {
   xhr.open("GET", "https://reqres.in/api/products/3", true);
 
   xhr.onload = function() {
-    console.log(xhr.responseText);
+    console.log(xhr.readyState);
   };
 
-  xhr.send();
+  xhr.send(undefined);
 }
 
 function reqresPostTest() {
